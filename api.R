@@ -39,3 +39,4 @@ function(Ni_prev=100, alpha_ij=0.1, t=1) {
     taux_de_croissance = r_i
   )
 }
+
