@@ -4,7 +4,7 @@ An interactive tool for simulating Wyverne population dynamics.
 
 ## Overview
 
-Wyverne ecosystem provides a containerized application to simulate and visualize the interaction between a Wyverne population ($N_i$) and a control Dragon population ($N_j$) using a mathematical model.
+Wyverne ecosystem provides a containerized application to simulate and visualize the interaction between a Wyverne population (N_i) and a control Dragon population (N_j) using a mathematical model.
 It allows you to:
 - Calculate population evolution based on growth and competition rates
 - Expose data via a REST API (FastAPI) for interoperability
@@ -12,17 +12,16 @@ It allows you to:
 
 ## Features
 
-- **Mathematical Modeling**: Simulation of population dynamics over time ($t=0$ to $10$)
+- **Mathematical Modeling**: Simulation of population dynamics over time (t = 0 to 10)
 - **REST API**: Exposes key metrics (taille, taux_de_competition, taux_de_croissance) in JSON format
 - **Interactive Visualization**: Real-time charting of the population curve using Streamlit
 - **Containerization**: Fully isolated environment using Docker with automated port mapping
 
 ## Requirements
 
-- Docker Desktop (Required for containerization)
-- PowerShell (For automated deployment script)
-- Internal dependencies (managed by Docker): 
+- Internal dependencies : 
 - Python 3.12+
+- Docker 
 - FastAPI & Uvicorn
 - Streamlit
 - Pandas & NumPy
@@ -53,19 +52,7 @@ It allows you to:
    docker run -p 16080:8501 -p 16081:8000 wyverne-python
    ```
 
-5. **Manual Access to the Application**
-- Dashboard	
-   ```bash
-   http://localhost:16080
-   ```
-
-- API Data
-   ```bash
-   http://localhost:16081/population
-   ```
-
-
-6. **Use of the application**
+5. **Use of the application**
 
 The application will automatically open in your browser
 Dashboard (Frontend): http://localhost:16080
@@ -100,9 +87,9 @@ The data is generated mathematically based on the interaction model defined in t
 
 | Variable | Type | Description |
 |----------|------|-------------|
-| taille | float | Current size of the Wyverne population ($N_i$) |
-| taux_de_competition | float | Competition rate ($\alpha_i = 0.02$) |
-| taux_de_croissance | float | Growth rate ($r_i = 0.05$) |
+| taille | float | Current size of the Wyverne population (N_i) |
+| taux_de_competition | float | Competition rate (\alpha_i = 0.02) |
+| taux_de_croissance | float | Growth rate (r_i = 0.05) |
 | temps | array | Time scale from 0 to 10 |
 
 ## Authors
