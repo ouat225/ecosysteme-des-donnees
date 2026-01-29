@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-# Point 1 : Paramètres et calcul
+# Paramètres et calcul
 Kj = 16080  # Capacité de la population précédente (Dragons)
 t = np.linspace(0, 10, 100) # Temps de 0 à 10
 

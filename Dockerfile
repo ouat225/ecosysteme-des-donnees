@@ -1,5 +1,5 @@
 # Image de base Python
-FROM python:3.10-slim
+FROM python:3.12
 
 # Installation des dépendances
 WORKDIR /app

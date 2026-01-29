@@ -6,7 +6,7 @@ st.set_page_config(page_title="Wyverne Dashboard", page_icon="🐉")
 
 st.title("📊 Suivi de la Population : Wyverne")
 
-# Récupération via l'API (Point 2) 
+# Récupération via l'API 
 try:
     res = requests.get("http://localhost:8000/population")
     data = res.json()
@@ -18,7 +18,7 @@ try:
 except:
     st.warning("L'API Backend n'est pas encore lancée.")
 
-# Graphique d'évolution (Point 3) 
+# Graphique d'évolution  
 st.subheader("📈 Évolution temporelle")
 df = pd.read_csv("wyverne_history.csv")
 st.line_chart(df.set_index('temps')['taille'])
