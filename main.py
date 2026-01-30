@@ -1,23 +1,28 @@
-import numpy as np
+import math
 
-def calcul_lotka_volterra(Ni_prev, Nj_curr, r_i=0.05, alpha_i=0.02):
+def calcul_lotka_volterra(Ni, Nj, r, K, alpha):
     """
-    Calcule la nouvelle population Ni en fonction de la compétition avec Nj.
-    Formule simplifiée pour la simulation : Ni(t+1) = Ni(t) + croissance - competition
+    Calcule la population au temps t+1 selon la formule discrète du sujet :
+    Nt+1 = Nt * (1 + r * (1 - (Nt + alpha * N_adverse) / K))
     """
-    # Modèle discret simple :
-    # La population change selon son taux de croissance, freinée par la compétition avec Nj
-    delta = (r_i * Ni_prev) - (alpha_i * Ni_prev * Nj_curr / 20000) 
+    # 1. Calcul de la densité (compétition intra + inter-spécifique)
+    term_densite = (Ni + (alpha * Nj)) / K
     
-    Ni_new = Ni_prev + delta
+    # 2. Calcul du facteur de croissance
+    facteur = 1 + (r * (1 - term_densite))
     
-    # On évite les populations négatives ou explosives pour la démo
-    return max(0, Ni_new)
+    # 3. Application
+    Ni_next = Ni * facteur
+    
+    # Sécurité : Pas de population négative
+    return max(0, Ni_next)
 
 def get_simulation_nj(temps):
     """
-    Simule la population adverse (Dragon) si l'API B n'est pas disponible.
-    Utilise la fonction Cosinus demandée.
+    Simule la population adverse (Groupe H - Zombies) pour la phase de test.
+    Oscille entre 800 et 1200 pour voir l'impact sur la Wyverne.
     """
-    Kj = 16080
-    return abs(Kj * np.cos(temps))
+    base = 1000
+    amplitude = 200
+    # Cosinus pour faire des vagues
+    return base + amplitude * math.cos(temps / 5.0)

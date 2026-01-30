@@ -1,32 +1,29 @@
+version: '3.8'
+
 services:
   api:
     build: .
     image: wyverne-py
     container_name: wyverne-api
+    # Lancement du serveur API sur le port interne 8000
     command: uvicorn api:app --host 0.0.0.0 --port 8000
     ports:
-      - "16083:8000"
-    environment:
-      - PYTHONUNBUFFERED=1
-    restart: unless-stopped
+      - "16081:8000" # Mappage : Ton PC (16081) <-> Docker (8000)
     volumes:
-      - ./data:/app/data
-    healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/docs')"]
-      interval: 5s
-      timeout: 2s
-      retries: 20
+      - ./storage:/app/storage # Persistance du fichier CSV
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # Pour parler aux autres groupes
 
   app:
     build: .
     image: wyverne-py
     container_name: wyverne-app
+    # Lancement du Dashboard sur le port interne 8501
     command: streamlit run app.py --server.address=0.0.0.0 --server.port=8501
     ports:
-      - "16082:8501"
+      - "16080:8501" # Mappage : Ton PC (16080) <-> Docker (8501)
     environment:
+      # L'URL interne pour que le Dashboard trouve l'API
       - API_URL=http://api:8000/population
     depends_on:
-      api:
-        condition: service_healthy
-    restart: unless-stopped
+      - api

@@ -4,61 +4,62 @@ import time
 import requests
 import os
 
-st.set_page_config(page_title="Wyverne Real-Time", layout="wide")
+# --- CONFIG PAGE ---
+st.set_page_config(page_title="Wyverne Monitor (Gr. I)", page_icon="🐉", layout="wide")
+st.title("🐉 Tableau de Bord : Wyverne vs Zombies (Groupe H)")
+st.markdown("---")
 
-st.title("🐉 Wyverne vs Dragon : Suivi Temps Réel")
-
-# Configuration API interne (Port 16083)
+# --- CONFIG RÉSEAU ---
 API_URL = os.getenv("API_URL", "http://api:8000/population")
 
-# Initialisation de l'historique dans la session Streamlit
+# --- CONFIG HISTORIQUE ---
 if "history" not in st.session_state:
-    st.session_state.history = pd.DataFrame(columns=["temps", "Wyverne", "Dragon (Adverse)"])
+    st.session_state.history = pd.DataFrame(columns=["temps", "Wyverne", "Zombies"])
 
-# Zone d'affichage des indicateurs (Placeholders)
+# --- LAYOUT ---
 col1, col2, col3 = st.columns(3)
-metric_taille = col1.empty()
-metric_adv = col2.empty()
+metric_wyverne = col1.empty()
+metric_zombie = col2.empty()
 metric_temps = col3.empty()
 
-st.divider()
-st.subheader("📈 Évolution de la Confrontation")
+st.subheader("📈 Évolution en Temps Réel")
 chart_placeholder = st.empty()
 
-# Boucle de rafraîchissement automatique
-# Cette boucle tourne indéfiniment tant que la page est ouverte
+# --- BOUCLE ---
 while True:
     try:
-        # 1. Appel à l'API (ce qui déclenche le calcul de l'étape suivante)
-        response = requests.get(API_URL)
-        data = response.json()
+        response = requests.get(API_URL, timeout=2)
+        if response.status_code == 200:
+            data = response.json()
+            
+            # MÉTRIQUES
+            metric_wyverne.metric("🐉 Wyverne (Nous)", f"{data['taille']:.2f}")
+            metric_zombie.metric("🧟 Zombies (Cible)", f"{data['population_cible_nj']:.2f}")
+            metric_temps.metric("⏱️ Temps", f"t = {data['temps']}")
+
+            # GRAPHIQUE
+            new_row = pd.DataFrame({
+                "temps": [data["temps"]],
+                "Wyverne": [data["taille"]],
+                "Zombies": [data["population_cible_nj"]]
+            })
+            
+            if st.session_state.history.empty:
+                st.session_state.history = new_row
+            else:
+                st.session_state.history = pd.concat([st.session_state.history, new_row], ignore_index=True)
+
+            # On utilise le temps comme axe X
+            chart_data = st.session_state.history.set_index("temps")
+            
+            with chart_placeholder:
+                # Vert pour Wyverne, Rouge pour Zombies
+                st.line_chart(chart_data, color=["#00FF00", "#FF0000"]) 
         
-        # 2. Mise à jour des métriques
-        metric_taille.metric("Population Wyverne", f"{data['taille']:.2f}")
-        metric_adv.metric("Adversaire (Dragon)", f"{data['population_adverse_nj']:.2f}")
-        metric_temps.metric("Temps Simulation", f"t = {data['temps']}")
-
-        # 3. Mise à jour de l'historique
-        new_row = pd.DataFrame({
-            "temps": [data["temps"]],
-            "Wyverne": [data["taille"]],
-            "Dragon (Adverse)": [data["population_adverse_nj"]]
-        })
-        
-        # Concaténation propre pour éviter les warnings pandas
-        if st.session_state.history.empty:
-             st.session_state.history = new_row
-        else:
-             st.session_state.history = pd.concat([st.session_state.history, new_row], ignore_index=True)
-
-        # 4. Affichage du graphique mis à jour
-        with chart_placeholder:
-            # On affiche les deux courbes pour voir la guerre
-            st.line_chart(st.session_state.history.set_index("temps"))
-
-        # 5. Attente de 5 secondes (Consigne transcription)
+        # ATTENTE 5 SECONDES
         time.sleep(5)
-        
+
     except Exception as e:
-        st.error(f"Erreur de connexion à l'API : {e}")
+        with chart_placeholder:
+            st.warning(f"⏳ Démarrage API... ({e})")
         time.sleep(5)
