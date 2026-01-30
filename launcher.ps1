@@ -5,9 +5,9 @@ Write-Host "1. Nettoyage des anciens conteneurs..."
 docker ps -q | ForEach-Object { docker stop $_ }
 
 # 2. Lancer le conteneur en mode DÉTACHÉ (-d)
-# L'option -d est cruciale : elle lance Docker en arrière-plan pour que le script continue
+# Ports : 16080 (Dashboard) et 16081 (API)
 Write-Host "2. Lancement du conteneur..."
-docker run -d -p 16080:8501 -p 16081:8000 wyverne-python
+docker run -d -p 16080:16080 -p 16081:16081 wyverne-python
 
 # 3. Petite pause pour laisser le temps au serveur de démarrer
 Write-Host "3. Attente du démarrage du serveur (5 secondes)..."

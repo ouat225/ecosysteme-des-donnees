@@ -1,98 +1,90 @@
-# WYVERNE ECOSYSTEM
+# ÉCOSYSTÈME WYVERNE
 
-An interactive tool for simulating Wyverne population dynamics.
+Un outil interactif pour simuler la dynamique de population des wyvernes.
 
-## Overview
+## Aperçu
 
-Wyverne ecosystem provides a containerized application to simulate and visualize the interaction between a Wyverne population (N_i) and a control Dragon population (N_j) using a mathematical model.
-It allows you to:
-- Calculate population evolution based on growth and competition rates
-- Expose data via a REST API (FastAPI) for interoperability
-- Visualize temporal evolution through an interactive dashboard
+L’écosystème Wyverne fournit une application conteneurisée permettant de simuler et visualiser l’interaction entre une population de Wyvernes (N_i) et une population de Dragons de contrôle (N_j) à l’aide d’un modèle mathématique.
+Il permet de :
+- Calculer l’évolution des populations selon les taux de croissance et de compétition
+- Exposer les données via une API REST (FastAPI) pour l’interopérabilité.
+- Visualiser l’évolution temporelle via un tableau de bord interactif
 
-## Features
+## Fonctionnalités
 
-- **Mathematical Modeling**: Simulation of population dynamics over time (t = 0 to 10)
-- **REST API**: Exposes key metrics (taille, taux_de_competition, taux_de_croissance) in JSON format
-- **Interactive Visualization**: Real-time charting of the population curve using Streamlit
-- **Containerization**: Fully isolated environment using Docker with automated port mapping
+- **Modélisation mathématique**: Simulation de la dynamique des populations dans le temps (t = 0 à 10)
+- **API REST**: Expose les métriques clés (taille, taux_de_competition, taux_de_croissance) au format JSON
+- **Visualisation interactive**: Graphiques en temps réel de la courbe de population via Streamlit
+- **Conteneurisation**: Environnement totalement isolé grâce à Docker avec mappage automatique des ports.
 
-## Requirements
+## Prérequis
 
-- Internal dependencies : 
+- Dépendances internes : 
 - Python 3.12+
 - Docker 
 - FastAPI & Uvicorn
 - Streamlit
 - Pandas & NumPy
 
-## Installation and Usage
+## Installation
 
-1. **Clone the repository**
+1. **Cloner le dépôt**
    ```bash
    git clone https://gitlab-mi.univ-reims.fr/musi0005/projet_eco_sys.git
    ```
 
-2. **If script execution is disabled (run this command)**
-   ```bash
-   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-   ```
-
-3. **Automated Launch (Recommended)**
-   ```bash
-   .\launcher.ps1
-   ```
-
-4. **Installation (Docker CLI)**
+2. **Installation**
    ```bash
    docker build -t wyverne-python .
    ```
 
+3. **Lancement**
    ```bash
-   docker run -p 16080:8501 -p 16081:8000 wyverne-python
+   .\launcher.ps1
    ```
 
-5. **Use of the application**
+4. **Utilisation de l’application**
 
-The application will automatically open in your browser
-Dashboard (Frontend): http://localhost:16080
+L’application s’ouvrira automatiquement dans votre navigateur :
+Tableau de bord (Frontend): http://localhost:16080
 API (Backend): http://localhost:16081/population
-Navigate through the dashboard to view the population curve or access the API for raw data.
+Naviguez dans le tableau de bord pour visualiser la courbe de population ou accédez à l’API pour obtenir les données brutes.
 
-## Project structure
+## Structure du projet
 
 ```
 
 Projet_éco_sys/
-├── main.py                      # Simulation logic 
-├── api.py                       # FastAPI Backend 
-├── app.py                       # Streamlit Frontend 
-├── Dockerfile                   # Container configuration
-├── start.sh                     # Internal entrypoint script
-├── launcher.ps1                 # Windows deployment automation script
+├── main.py                     
+├── api.py                      
+├── app.py                       
+├── Dockerfile                   
+├── start.sh                    
+├── launcher.ps1                 
 ├── requirements.txt             
 └── README.md                    
 
 ```
 
-## Dataset
+## Jeu de données
 
 ### Source
-The data is generated mathematically based on the interaction model defined in the specifications of Project I :
-- Network Ports (16080)
+
+Les données sont générées mathématiquement selon le modèle d’interaction défini dans les spécifications du Projet I :
+- Ports Réseau (16080 & 16081)
 - Population (Wyverne)
 - Google Cloud Platform
 
-### Variable Descriptions
+### Description des variables
 
 | Variable | Type | Description |
 |----------|------|-------------|
-| taille | float | Current size of the Wyverne population (N_i) |
-| taux_de_competition | float | Competition rate (\alpha_i = 0.02) |
-| taux_de_croissance | float | Growth rate (r_i = 0.05) |
-| temps | array | Time scale from 0 to 10 |
+| taille | valeur flottante | Taille actuelle de la population de Wyvernes (N_i) |
+| taux_de_competition | valeur flottante | Taux de compétition (\$alpha_i$ = 0.02) |
+| taux_de_croissance | valeur flottante | Taux de croissance (r_i = 0.05) |
+| temps | tableau | Échelle temporelle de 0 à 10 |
 
-## Authors
+## Auteurs
 
 - Oumar Abdramane ALLAWAN
 - Dominique MUSITELLI

@@ -1,28 +1,23 @@
-import pandas as pd
 import numpy as np
 
-# Paramètres et calcul
-Kj = 16080  # Capacité de la population précédente (Dragons)
-t = np.linspace(0, 10, 100) # Temps de 0 à 10
+def calcul_lotka_volterra(Ni_prev, Nj_curr, r_i=0.05, alpha_i=0.02):
+    """
+    Calcule la nouvelle population Ni en fonction de la compétition avec Nj.
+    Formule simplifiée pour la simulation : Ni(t+1) = Ni(t) + croissance - competition
+    """
+    # Modèle discret simple :
+    # La population change selon son taux de croissance, freinée par la compétition avec Nj
+    delta = (r_i * Ni_prev) - (alpha_i * Ni_prev * Nj_curr / 20000) 
+    
+    Ni_new = Ni_prev + delta
+    
+    # On évite les populations négatives ou explosives pour la démo
+    return max(0, Ni_new)
 
-# Paramètres 
-r_i = 0.05      # taux_de_croissance
-alpha_i = 0.02  # taux_de_competition
-
-# Nj(t) = Kj * cos(t) (Population témoin)
-Nj_t = Kj * np.cos(t)
-
-# Ni(t) = Population Wyverne (calculée selon l'interaction)
-# On utilise la valeur absolue pour éviter les populations négatives
-Ni_t = np.abs(Nj_t * (1 + r_i - alpha_i))
-
-# Stockage 
-df = pd.DataFrame({
-    'temps': t,
-    'taille': Ni_t,
-    'taux_de_croissance': r_i,
-    'taux_de_competition': alpha_i
-})
-
-df.to_csv("wyverne_history.csv", index=False)
-print("Données sauvegardées dans wyverne_history.csv")
+def get_simulation_nj(temps):
+    """
+    Simule la population adverse (Dragon) si l'API B n'est pas disponible.
+    Utilise la fonction Cosinus demandée.
+    """
+    Kj = 16080
+    return abs(Kj * np.cos(temps))
