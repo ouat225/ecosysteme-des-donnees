@@ -1,0 +1,32 @@
+services:
+  api:
+    build: .
+    image: wyverne-py
+    container_name: wyverne-api
+    command: uvicorn api:app --host 0.0.0.0 --port 8000
+    ports:
+      - "16083:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    volumes:
+      - ./data:/app/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/docs')"]
+      interval: 5s
+      timeout: 2s
+      retries: 20
+
+  app:
+    build: .
+    image: wyverne-py
+    container_name: wyverne-app
+    command: streamlit run app.py --server.address=0.0.0.0 --server.port=8501
+    ports:
+      - "16082:8501"
+    environment:
+      - API_URL=http://api:8000/population
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
