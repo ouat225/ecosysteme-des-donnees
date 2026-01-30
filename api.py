@@ -1,10 +1,19 @@
 from fastapi import FastAPI
+from fastapi.responses import RedirectResponse
 import requests
 import main # On importe nos formules
 import csv
 import os
 
-app = FastAPI()
+app = FastAPI(
+    title="Wyverne API",
+    description="Simulation Wyverne vs Dragon",
+    version="1.0.0"
+)
+
+@app.get("/")
+def root():
+    return RedirectResponse(url="/docs")
 
 # État global de la simulation (en mémoire)
 simulation_state = {

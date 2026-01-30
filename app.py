@@ -2,13 +2,14 @@ import streamlit as st
 import pandas as pd
 import time
 import requests
+import os
 
 st.set_page_config(page_title="Wyverne Real-Time", layout="wide")
 
 st.title("🐉 Wyverne vs Dragon : Suivi Temps Réel")
 
-# Configuration API interne (Port 16081)
-API_URL = "http://127.0.0.1:16081/population"
+# Configuration API interne (Port 16083)
+API_URL = os.getenv("API_URL", "http://api:8000/population")
 
 # Initialisation de l'historique dans la session Streamlit
 if "history" not in st.session_state:
