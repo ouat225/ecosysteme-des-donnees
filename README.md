@@ -35,15 +35,10 @@ Il permet de :
 
 2. **Installation**
    ```bash
-   docker build -t wyverne-python .
+   docker-compose up -d --build
    ```
 
-3. **Lancement**
-   ```bash
-   .\launcher.ps1
-   ```
-
-4. **Utilisation de l’application**
+3. **Utilisation de l’application**
 
 L’application s’ouvrira automatiquement dans votre navigateur :
 Tableau de bord (Frontend): http://localhost:16080
@@ -54,16 +49,15 @@ Naviguez dans le tableau de bord pour visualiser la courbe de population ou acc�
 
 ```
 
-Projet_éco_sys/
-├── main.py                     
-├── api.py                      
-├── app.py                       
-├── Dockerfile                   
-├── start.sh                    
-├── launcher.ps1                 
-├── requirements.txt             
-└── README.md                    
-
+Projet_eco_sys/
+├── storage/                  
+├── api.py                    
+├── app.py                    
+├── docker-compose.yml        
+├── Dockerfile                
+├── main.py                   
+├── requirements.txt          
+└── README.md                 
 ```
 
 ## Jeu de données
