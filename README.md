@@ -77,9 +77,3 @@ Les données sont générées mathématiquement selon le modèle d’interaction
 | taux_de_competition | valeur flottante | Taux de compétition (\$alpha_i$ = 0.02) |
 | taux_de_croissance | valeur flottante | Taux de croissance (r_i = 0.05) |
 | temps | tableau | Échelle temporelle de 0 à 10 |
-
-## Auteurs
-
-- Oumar Abdramane ALLAWAN
-- Dominique MUSITELLI
-- Jean-Marc OUATTARA
